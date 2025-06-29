@@ -2,7 +2,7 @@ import os
 import random
 
 folder_path = 'img'  # 画像フォルダのパス
-img_url = "https://arimosuke.github.io/rin_image_sender/"
+img_url = "https://arimosuke.github.io/rin_image_sender2/"
 
 # imgフォルダ配下の画像ファイル情報を取り込む
 def load_images_from_folder(folder):
