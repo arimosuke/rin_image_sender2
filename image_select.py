@@ -8,7 +8,8 @@ img_url = "https://arimosuke.github.io/rin_image_sender2/"
 def load_images_from_folder(folder):
     images = []
     for filename in os.listdir(folder):
-        if filename.endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+        # if filename.endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+        if filename.endswith(('.webp')):
             images.append(os.path.join(folder, filename))
     return images
 

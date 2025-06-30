@@ -78,7 +78,7 @@ config = load_config("config.json")
 LINE_ACCESS_TOKEN = config["LINE"]["channel_token"]
 USER_ID = config["LINE"]["channel_secret"]
 
-# send_message()
+send_message()
 schedule_next_message()
 
 while True:
