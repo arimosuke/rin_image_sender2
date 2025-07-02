@@ -9,28 +9,36 @@ import random
 from message_generation import generate_message
 from image_select import get_image_link
 
+prompt_morning = "朝一番、今日一日頑張れる励ましのメッセージを送ってください。"
+prompt_lunch = "お昼ご飯の後は眠いけど、それでもお仕事を頑張れるようなメッセージを送ってください。"
+prompt_afternoon = "午後の仕事もあと少し、頑張れるようなメッセージを送ってください。"
+prompt_evening = "今日も一日お疲れ様でした。明日も頑張れるようなメッセージを送ってください。"
+prompt_night = "夜遅くまでお疲れ様です。明日も良い日になりますように、励ましのメッセージを送ってください。"
 
 def load_config(path="config.json"):
     with open(path, "r") as f:
         config = json.load(f)
     return config
 
-def send_message():
+def send_message(pre_prompt=None):
     # 今の時刻を取得
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"メッセージ送信時刻: {current_time}")
 
-    # 現在自国によってメッセージの内容を変える。
+    # 現在時刻によってメッセージの内容を変える。
     if datetime.datetime.now().hour < 9:
-        prompt = "朝一番、今日一日頑張れる励ましのメッセージを送ってください。"
+        prompt = prompt_morning
     elif datetime.datetime.now().hour < 14:
-        prompt = "お昼ご飯の後は眠いけど、それでもお仕事を頑張れるようなメッセージを送ってください。"
+        prompt = prompt_lunch
     elif datetime.datetime.now().hour < 18:
-        prompt = "午後の仕事もあと少し、頑張れるようなメッセージを送ってください。"
+        prompt = prompt_afternoon
     elif datetime.datetime.now().hour < 22:
-        prompt = "今日も一日お疲れ様でした。明日も頑張れるようなメッセージを送ってください。"
+        prompt = prompt_evening
     else:
-        prompt = "夜遅くまでお疲れ様です。明日も良い日になりますように、励ましのメッセージを送ってください。"
+        prompt = prompt_night
+
+    # only for test
+    prompt = pre_prompt if pre_prompt else prompt
 
     # 送信メッセージの設定
     send_text = generate_message(prompt)
@@ -78,7 +86,10 @@ config = load_config("config.json")
 LINE_ACCESS_TOKEN = config["LINE"]["channel_token"]
 USER_ID = config["LINE"]["channel_secret"]
 
-send_message()
+# for i in range(5):
+#     prompts_list = [prompt_morning, prompt_lunch, prompt_afternoon, prompt_evening, prompt_night]
+#     send_message(pre_prompt=random.choice(prompts_list))  # ランダムなプロンプトで初回メッセージを送信
+
 schedule_next_message()
 
 while True:

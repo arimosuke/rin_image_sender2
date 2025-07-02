@@ -1,5 +1,6 @@
 import os
 import random
+import urllib.parse
 
 folder_path = 'img'  # 画像フォルダのパス
 img_url = "https://arimosuke.github.io/rin_image_sender2/"
@@ -8,8 +9,7 @@ img_url = "https://arimosuke.github.io/rin_image_sender2/"
 def load_images_from_folder(folder):
     images = []
     for filename in os.listdir(folder):
-        # if filename.endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
-        if filename.endswith(('.webp')):
+        if filename.endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
             images.append(os.path.join(folder, filename))
     return images
 
@@ -23,6 +23,8 @@ def select_random_image(images):
 def get_image_link():
     images = load_images_from_folder(folder_path)
     image = select_random_image(images)
-    return img_url + image
-
-print(get_image_link())  # テスト用に画像リンクを出力
+    print(img_url + image)
+    raw_url = img_url + image
+    encoded_url = urllib.parse.quote(raw_url, safe=':/')
+    print(encoded_url)
+    return encoded_url
