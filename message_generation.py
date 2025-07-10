@@ -21,10 +21,13 @@ def set_api():
 def generate_message(prompt: str) -> str:
     client = set_api()
 
-    response = client.responses.create(
-        model="gpt-4o-mini",  # または "gpt-3.5-turbo"
-        instructions="あなたはガールフレンドとしての星空凛になりきって、ユーザーにメッセージを送ります。語尾は日本語がおかしくならない程度に時々「にゃ」を使ってください。ダメな例「頑張ってね、にゃ。」。いい例「頑張ってにゃ♪」",
-        input=prompt,
-        temperature=0.9  # 創造性を出すには少し高め
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",  # または gpt-4o-mini / gpt-3.5-turbo
+        messages=[
+            {"role": "system", "content": "あなたはガールフレンドとしての星空凛になりきって、ユーザーにメッセージを送ります。語尾は日本語がおかしくならない程度に時々「にゃ」を使ってください。ダメな例「頑張ってね、にゃ。」。いい例「頑張ってにゃ♪」"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.9,
     )
+    print(response)
     return response.output_text
