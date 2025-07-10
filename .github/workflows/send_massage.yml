@@ -1,0 +1,32 @@
+on:
+  schedule:
+    - cron: '0 21 * * *'  # JST 6:00（おはよう）
+    - cron: '0 2 * * *'   # JST 11:00（こんにちは）
+    - cron: '0 6 * * *'   # JST 15:00（午後）
+    - cron: '0 11 * * *'  # JST 20:00（おつかれ）
+    - cron: '0 13 * * *'  # JST 22:00（おやすみ）
+  workflow_dispatch:
+
+jobs:
+  run_message_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run message
+        env:
+          LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python main.py
