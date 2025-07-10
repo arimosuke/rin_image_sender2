@@ -20,14 +20,15 @@ def load_config(path="config.json"):
         config = json.load(f)
     return config
 
-def wait_random_offset(max_offset_min=1):
+def wait_random_offset(max_offset_min=0.1):
     delay = random.randint(0, max_offset_min * 60)
     print(f"⏱ ランダム待機時間: {delay // 60}分 {delay % 60}秒")
     time.sleep(delay)
     
 def get_prompt_by_time(pre_prompt=None):
-    now_jst = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
+    now_jst = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=9)
     hour = now_jst.hour
+    print(now_jst)
     
     # 現在時刻によってメッセージの内容を変える。
     if hour < 9:
@@ -44,27 +45,8 @@ def get_prompt_by_time(pre_prompt=None):
     prompt = pre_prompt if pre_prompt else prompt
 
 def send_message(pre_prompt=None):
-    # # 今の時刻を取得
-    # current_time = datetime.datetime.now()
-    # print(f"メッセージ送信時刻: {current_time}")
-
-    # # 現在時刻によってメッセージの内容を変える。
-    # if current_time.hour < 9:
-    #     prompt = prompt_morning
-    # elif current_time.hour < 14:
-    #     prompt = prompt_lunch
-    # elif current_time.hour < 18:
-    #     prompt = prompt_afternoon
-    # elif current_time.hour < 22:
-    #     prompt = prompt_evening
-    # else:
-    #     prompt = prompt_night
-
-    # # only for test
-    # prompt = pre_prompt if pre_prompt else prompt
-
     # 送信メッセージの設定
-    send_text = generate_message(prompt)
+    send_text = generate_message(get_prompt_by_time())
 
     # 画像メッセージの設定
     image = get_image_link()  # ランダムな画像リンクを取得
@@ -72,6 +54,8 @@ def send_message(pre_prompt=None):
         original_content_url=image,  # オリジナル
         preview_image_url=image,  # オリジナル
     )
+    
+    wait_random_offset()
 
     # LINE Bot APIのインスタンスを作成
     line_bot_api = LineBotApi(LINE_ACCESS_TOKEN)
@@ -84,26 +68,26 @@ def send_message(pre_prompt=None):
     print("メッセージを送信しました。")
 
 
-def schedule_daily_reset():
-    # 毎日0:01に、翌日の送信をランダム時刻で再スケジュール
-    schedule.every().day.at("00:01").do(schedule_next_message)
+# def schedule_daily_reset():
+#     # 毎日0:01に、翌日の送信をランダム時刻で再スケジュール
+#     schedule.every().day.at("00:01").do(schedule_next_message)
 
-def schedule_next_message():
-    time_slots = [
-        ("07", (0, 59)),
-        ("12", (50, 59)),
-        ("17", (0, 59)),
-        ("20", (0, 59)),
-        ("22", (0, 59)),
-    ]
+# def schedule_next_message():
+#     time_slots = [
+#         ("07", (0, 59)),
+#         ("12", (50, 59)),
+#         ("17", (0, 59)),
+#         ("20", (0, 59)),
+#         ("22", (0, 59)),
+#     ]
 
-    for hour, (min_start, min_end) in time_slots:
-        minute = random.randint(min_start, min_end)
-        time_str = f"{hour}:{minute:02d}"
-        print(f"⏰ スケジュール登録: {time_str}")
-        schedule.every().day.at(time_str).do(send_message)
+#     for hour, (min_start, min_end) in time_slots:
+#         minute = random.randint(min_start, min_end)
+#         time_str = f"{hour}:{minute:02d}"
+#         print(f"⏰ スケジュール登録: {time_str}")
+#         schedule.every().day.at(time_str).do(send_message)
     
-    schedule_daily_reset()
+#     schedule_daily_reset()
 
 
 # 環境変数からLINEのアクセストークンとユーザーIDを取得
@@ -111,12 +95,14 @@ config = load_config("config.json")
 LINE_ACCESS_TOKEN = config["LINE"]["channel_token"]
 USER_ID = config["LINE"]["channel_secret"]
 
+send_message()
+
 # for i in range(5):
-prompts_list = [prompt_morning, prompt_lunch, prompt_afternoon, prompt_evening, prompt_night]
-send_message(pre_prompt=random.choice(prompts_list))  # ランダムなプロンプトで初回メッセージを送信
+# prompts_list = [prompt_morning, prompt_lunch, prompt_afternoon, prompt_evening, prompt_night]
+# send_message(pre_prompt=random.choice(prompts_list))  # ランダムなプロンプトで初回メッセージを送信
 
-schedule_next_message()
+# schedule_next_message()
 
-while True:
-    schedule.run_pending()
-    time.sleep(60)  # 1秒待機してから次のスケジュールを確認
+# while True:
+#     schedule.run_pending()
+#     time.sleep(60)  # 1秒待機してから次のスケジュールを確認
