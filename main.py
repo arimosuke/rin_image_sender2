@@ -20,6 +20,11 @@ def load_config(path="config.json"):
         config = json.load(f)
     return config
 
+def wait_random_offset(max_offset_min=1):
+    delay = random.randint(0, max_offset_min * 60)
+    print(f"⏱ ランダム待機時間: {delay // 60}分 {delay % 60}秒")
+    time.sleep(delay)
+
 def send_message(pre_prompt=None):
     # 今の時刻を取得
     current_time = datetime.datetime.now()
