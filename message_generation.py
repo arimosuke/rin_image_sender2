@@ -30,4 +30,5 @@ def generate_message(prompt: str) -> str:
         temperature=0.9,
     )
     print(response)
-    return response.output_text
+    return response.choices[0].message.content
+
