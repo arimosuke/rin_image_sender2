@@ -101,15 +101,12 @@ def send_message(pre_prompt=None):
 LINE_ACCESS_TOKEN = os.environ.get("LINE_ACCESS_TOKEN")
 USER_ID = os.environ.get("LINE_USER_ID")
 
-# OpenAI用
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
 
 # エラーハンドリング（任意）
 if not LINE_ACCESS_TOKEN or not USER_ID:
     raise EnvironmentError("LINEの環境変数が正しく設定されていません。")
 
-if not OPENAI_API_KEY:
-    raise EnvironmentError("OpenAIのAPIキーが設定されていません。")
 
 
 send_message()
