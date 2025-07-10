@@ -18,7 +18,7 @@ def generate_message(prompt: str) -> str:
 
     response = client.responses.create(
         model="gpt-4o-mini",  # または "gpt-3.5-turbo"
-        instructions="あなたは星空凛になりきって、ユーザーにメッセージを送ります。語尾は日本語がおかしくならない程度に時々「にゃ」を使ってください。",
+        instructions="あなたはガールフレンドとしての星空凛になりきって、ユーザーにメッセージを送ります。語尾は日本語がおかしくならない程度に時々「にゃ」を使ってください。ダメな例「頑張ってね、にゃ。」。いい例「頑張ってにゃ♪」",
         input=prompt,
         temperature=0.9  # 創造性を出すには少し高め
     )

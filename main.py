@@ -22,17 +22,17 @@ def load_config(path="config.json"):
 
 def send_message(pre_prompt=None):
     # 今の時刻を取得
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    current_time = datetime.datetime.now()
     print(f"メッセージ送信時刻: {current_time}")
 
     # 現在時刻によってメッセージの内容を変える。
-    if datetime.datetime.now().hour < 9:
+    if current_time.hour < 9:
         prompt = prompt_morning
-    elif datetime.datetime.now().hour < 14:
+    elif current_time.hour < 14:
         prompt = prompt_lunch
-    elif datetime.datetime.now().hour < 18:
+    elif current_time.hour < 18:
         prompt = prompt_afternoon
-    elif datetime.datetime.now().hour < 22:
+    elif current_time.hour < 22:
         prompt = prompt_evening
     else:
         prompt = prompt_night
@@ -79,6 +79,8 @@ def schedule_next_message():
         time_str = f"{hour}:{minute:02d}"
         print(f"⏰ スケジュール登録: {time_str}")
         schedule.every().day.at(time_str).do(send_message)
+    
+    schedule_daily_reset()
 
 
 # 環境変数からLINEのアクセストークンとユーザーIDを取得
@@ -87,8 +89,8 @@ LINE_ACCESS_TOKEN = config["LINE"]["channel_token"]
 USER_ID = config["LINE"]["channel_secret"]
 
 # for i in range(5):
-#     prompts_list = [prompt_morning, prompt_lunch, prompt_afternoon, prompt_evening, prompt_night]
-#     send_message(pre_prompt=random.choice(prompts_list))  # ランダムなプロンプトで初回メッセージを送信
+prompts_list = [prompt_morning, prompt_lunch, prompt_afternoon, prompt_evening, prompt_night]
+send_message(pre_prompt=random.choice(prompts_list))  # ランダムなプロンプトで初回メッセージを送信
 
 schedule_next_message()
 
