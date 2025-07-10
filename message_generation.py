@@ -1,15 +1,20 @@
 from openai import OpenAI
-import json
+import os
 
-def load_config(path="config.json"):
-    with open(path, "r") as f:
-        config = json.load(f)
-    return config
+# def load_config(path="config.json"):
+#     with open(path, "r") as f:
+#         config = json.load(f)
+#     return config
 
 def set_api():
-    config = load_config("config.json")
+    # config = load_config("config.json")
+    # OpenAI用
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+    if not OPENAI_API_KEY:
+        raise EnvironmentError("OpenAIのAPIキーが設定されていません。")
+
     client = OpenAI(
-        api_key = config["OPENAI"]["api_key"]
+        api_key = OPENAI_API_KEY
     )
     return client
 
