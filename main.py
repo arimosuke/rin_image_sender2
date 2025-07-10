@@ -5,6 +5,7 @@ import schedule
 import datetime
 import time
 import random
+import os
 
 from message_generation import generate_message
 from image_select import get_image_link
@@ -90,10 +91,26 @@ def send_message(pre_prompt=None):
 #     schedule_daily_reset()
 
 
-# 環境変数からLINEのアクセストークンとユーザーIDを取得
-config = load_config("config.json")
-LINE_ACCESS_TOKEN = config["LINE"]["channel_token"]
-USER_ID = config["LINE"]["channel_secret"]
+# # 環境変数からLINEのアクセストークンとユーザーIDを取得
+# config = load_config("config.json")
+# LINE_ACCESS_TOKEN = config["LINE"]["channel_token"]
+# USER_ID = config["LINE"]["channel_secret"]
+
+# github actionでAPIキーを取得するよう
+# LINE用
+LINE_ACCESS_TOKEN = os.environ.get("LINE_ACCESS_TOKEN")
+USER_ID = os.environ.get("LINE_USER_ID")
+
+# OpenAI用
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+# エラーハンドリング（任意）
+if not LINE_ACCESS_TOKEN or not USER_ID:
+    raise EnvironmentError("LINEの環境変数が正しく設定されていません。")
+
+if not OPENAI_API_KEY:
+    raise EnvironmentError("OpenAIのAPIキーが設定されていません。")
+
 
 send_message()
 
