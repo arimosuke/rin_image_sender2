@@ -44,6 +44,8 @@ def get_prompt_by_time(pre_prompt=None):
         prompt = prompt_night
         
     prompt = pre_prompt if pre_prompt else prompt
+    
+    return prompt
 
 def send_message(pre_prompt=None):
     # 送信メッセージの設定
