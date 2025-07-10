@@ -24,26 +24,44 @@ def wait_random_offset(max_offset_min=1):
     delay = random.randint(0, max_offset_min * 60)
     print(f"⏱ ランダム待機時間: {delay // 60}分 {delay % 60}秒")
     time.sleep(delay)
-
-def send_message(pre_prompt=None):
-    # 今の時刻を取得
-    current_time = datetime.datetime.now()
-    print(f"メッセージ送信時刻: {current_time}")
-
+    
+def get_prompt_by_time(pre_prompt=None):
+    now_jst = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
+    hour = now_jst.hour
+    
     # 現在時刻によってメッセージの内容を変える。
-    if current_time.hour < 9:
+    if hour < 9:
         prompt = prompt_morning
-    elif current_time.hour < 14:
+    elif hour < 14:
         prompt = prompt_lunch
-    elif current_time.hour < 18:
+    elif hour < 18:
         prompt = prompt_afternoon
-    elif current_time.hour < 22:
+    elif hour < 22:
         prompt = prompt_evening
     else:
         prompt = prompt_night
-
-    # only for test
+        
     prompt = pre_prompt if pre_prompt else prompt
+
+def send_message(pre_prompt=None):
+    # # 今の時刻を取得
+    # current_time = datetime.datetime.now()
+    # print(f"メッセージ送信時刻: {current_time}")
+
+    # # 現在時刻によってメッセージの内容を変える。
+    # if current_time.hour < 9:
+    #     prompt = prompt_morning
+    # elif current_time.hour < 14:
+    #     prompt = prompt_lunch
+    # elif current_time.hour < 18:
+    #     prompt = prompt_afternoon
+    # elif current_time.hour < 22:
+    #     prompt = prompt_evening
+    # else:
+    #     prompt = prompt_night
+
+    # # only for test
+    # prompt = pre_prompt if pre_prompt else prompt
 
     # 送信メッセージの設定
     send_text = generate_message(prompt)
