@@ -16,10 +16,10 @@ prompt_afternoon = "午後の仕事もあと少し、頑張れるようなメッ
 prompt_evening = "今日も一日お疲れ様でした。明日も頑張れるようなメッセージを送ってください。"
 prompt_night = "夜遅くまでお疲れ様です。明日も良い日になりますように、励ましのメッセージを送ってください。"
 
-def load_config(path="config.json"):
-    with open(path, "r") as f:
-        config = json.load(f)
-    return config
+# def load_config(path="config.json"):
+#     with open(path, "r") as f:
+#         config = json.load(f)
+#     return config
 
 def wait_random_offset(max_offset_min=0.1):
     delay = random.randint(0, max_offset_min * 60)
