@@ -11,8 +11,8 @@ from message_generation import generate_message
 from image_select import get_image_link
 
 prompt_morning = "朝一番、今日一日頑張れる励ましのメッセージを送ってください。"
-prompt_lunch = "お昼ご飯の後は眠いけど、それでもお仕事を頑張れるようなメッセージを送ってください。"
-prompt_afternoon = "午後の仕事もあと少し、頑張れるようなメッセージを送ってください。"
+prompt_lunch = "お昼ご飯の後でもお仕事を頑張れるようなメッセージを送ってください。"
+prompt_afternoon = "午後の仕事もあと少し、力が出るようなメッセージを送ってください。"
 prompt_evening = "今日も一日お疲れ様でした。明日も頑張れるようなメッセージを送ってください。"
 prompt_night = "夜遅くまでお疲れ様です。明日も良い日になりますように、励ましのメッセージを送ってください。"
 
@@ -33,15 +33,34 @@ def get_prompt_by_time(pre_prompt=None):
     
     # 現在時刻によってメッセージの内容を変える。
     if hour < 9:
-        prompt = prompt_morning
+        base_prompt = prompt_morning
     elif hour < 14:
-        prompt = prompt_lunch
+        base_prompt = prompt_lunch
     elif hour < 18:
-        prompt = prompt_afternoon
+        base_prompt = prompt_afternoon
     elif hour < 22:
-        prompt = prompt_evening
+        base_prompt = prompt_evening
     else:
-        prompt = prompt_night
+        base_prompt = prompt_night
+        
+    style_tags = [
+    "甘やかす感じで",
+    "恥ずかしがっている感じで",
+    "ちょっとツンデレっぽく",
+    "熱血応援モードで",
+    "少し不安そうな感じで",
+    "小悪魔っぽく誘惑しながら",
+    "ゆるっと眠たそうに",
+    "テンション高めでハイになって",
+    "知識人っぽくアドバイス調で",
+    "恋人が愛をささやく感じで"
+    "元気いっぱいに"
+    "心配するような感じで"
+    "しょうがないな〜、という感じで"
+    ]
+
+    prompt = f"{random.choice(style_tags)}{base_prompt}"
+
         
     prompt = pre_prompt if pre_prompt else prompt
     
