@@ -21,8 +21,8 @@ prompt_night = "夜遅くまでお疲れ様です。明日も良い日になり�
 #         config = json.load(f)
 #     return config
 
-def wait_random_offset(max_offset_min=0.1):
-    delay = random.randint(0, max_offset_min * 60)
+def wait_random_offset(max_offset_min=5):
+    delay = random.randint(0, max_offset_min *60)
     print(f"⏱ ランダム待機時間: {delay // 60}分 {delay % 60}秒")
     time.sleep(delay)
     
@@ -68,7 +68,13 @@ def get_prompt_by_time(pre_prompt=None):
 
 def send_message(pre_prompt=None):
     # 送信メッセージの設定
-    send_text = generate_message(get_prompt_by_time())
+    if random.random() > 0.03:
+        print("通常verでお届け")
+        send_text = generate_message(get_prompt_by_time())
+    else:
+        print("特別verでお届けにゃ♪")
+        pre_prompt = "恋人になりきって好きだということを伝えて"
+        send_text = generate_message(get_prompt_by_time(pre_prompt))
 
     # 画像メッセージの設定
     image = get_image_link()  # ランダムな画像リンクを取得
@@ -111,6 +117,9 @@ def send_message(pre_prompt=None):
     
 #     schedule_daily_reset()
 
+if random.random() > 0.6:
+    print("今回はスキップします")
+    exit()
 
 # # 環境変数からLINEのアクセストークンとユーザーIDを取得
 # config = load_config("config.json")
