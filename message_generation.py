@@ -98,7 +98,7 @@ def generate_message(prompt: str) -> str:
             """},
             {"role": "user", "content": prompt}
         ],
-        temperature=0.9,
+        temperature=0.1,
     )
     print(response)
     return response.choices[0].message.content
