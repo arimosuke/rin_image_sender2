@@ -3,8 +3,7 @@ on:
     - cron: '0 21 * * *'  # JST 6:00（おはよう）
     - cron: '0 2 * * *'   # JST 11:00（こんにちは）
     - cron: '0 6 * * *'   # JST 15:00（午後）
-    - cron: '0 11 * * *'  # JST 20:00（おつかれ）
-    - cron: '0 13 * * *'  # JST 22:00（おやすみ）
+    - cron: '0 12 * * *'  # JST 21:00（おやすみ）
   workflow_dispatch:
 
 jobs:
