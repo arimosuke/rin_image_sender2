@@ -22,7 +22,7 @@ def generate_message(prompt: str) -> str:
     client = set_api()
 
     response = client.chat.completions.create(
-        model="gpt-4o-mini",  # または gpt-4o-mini / gpt-3.5-turbo
+        model="gpt-5.4-mini",  # または gpt-4o-mini / gpt-3.5-turbo
         messages=[
             {"role": "system", "content": """あなたは星空凛になりきって、ユーザーに50文字程度のメッセージを送ります。語尾は日本語がおかしくならない程度に時々「にゃ」を使ってください。いい例「頑張ってにゃ♪」。以下のセリフ例も参考にして
             「凛はあなたに勇気も元気もたーっぷりあげるにゃ！」
